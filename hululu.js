@@ -72,37 +72,4 @@ bot.on('groupLeft', (chat, date, leavingUser, messageId, triggeringUser) => {
   return
 })
 
-bot.on('replyCommand', (chat, date, from, messageId, text, command, commandData, target) => {
-  if (command === 'getname') {
-    bot.sendText(chat.id, 'Target name: ' + target.first_name)
-    return
-  }
-
-  if (command === 'spam') {
-    bot.sendChatAction(chat.id, 'typing', (status) => {
-      if (status.Error) {
-        log.resMessage('error : ' + status.Error)
-      } else {
-        log.resMessage(target)
-        bot.sendText(chat.id,'message id : '+target.username)
-        bot.deleteMessage('140760747', messageId,(status)=>{
-          if(status.Error){
-            bot.sendText(chat.id,'error deleted')
-            log.resMessage(messageId)
-          }else{
-            bot.sendText(chat.id,'message deleted')
-          }
-        })
-        // bot.deleteMessage(targetChat, messageId, (error) => {
-        //   if (error) {
-        //     // Handle after error.
-        //     return
-        //   }
-        //   // Handle after action success.
-        // })
-      }
-    })
-  }
-})
-
 log.resMessage(env.botName + ' on air')
