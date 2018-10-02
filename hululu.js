@@ -18,16 +18,6 @@ const TelegramBot = require('telegram-bot-nova')
  */
 var bot = new TelegramBot(env.token)
 
-function onTyping(chat_id, callback) {
-  bot.sendChatAction(chat_id, 'typing', (err) => {
-    if (err) {
-      log.resMessage(err);
-    } else {
-      callback()
-    }
-  })
-}
-
 const textToMember = {
   join: function (username) {
     return 'welcome to the jungle @' + username // + 'something else'
@@ -46,7 +36,7 @@ bot.on('command', (chat, date, from, messageId, text, command, commandData) => {
       if (status.Error) {
         log.resMessage('error : ' + status.Error)
       } else {
-        bot.sendText(chat.id, env.started)
+        bot.sendText(chat.id, env.started_string)
         log.resMessage('start by : '+chat.id)  
         log.resMessage('bot name : '+env.botName)  
       }
@@ -57,17 +47,18 @@ bot.on('command', (chat, date, from, messageId, text, command, commandData) => {
 })
 
 bot.on('groupJoin', (chat, date, joiningUser, messageId, triggeringUser) => {
-  onTyping(chat.id);
-  bot.sendText(
-    chat.id, textToMember.join(joiningUser.username)
-  );
-  return
+  bot.sendChatAction(chat.id,'typing',
+    bot.sendText(
+      chat.id, textToMember.join(joiningUser.username)
+    )
+  );return
 })
 
 bot.on('groupLeft', (chat, date, leavingUser, messageId, triggeringUser) => {
-  onTyping(chat.id);
-  bot.sendText(
-    chat.id, textToMember.leave(leavingUser.username)
+  bot.sendChatAction(chat.id,'typing',
+    bot.sendText(
+      chat.id, textToMember.leave(leavingUser.username)
+    )
   );
   return
 })
