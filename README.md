@@ -40,7 +40,7 @@ $ npm install
 #### 4. Running Bot
 
 ``` bash
-$ node anone
+$ node hululu.js
 ```
 
 ### Note :
